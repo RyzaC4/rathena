@@ -86,7 +86,7 @@ ba_in01,252,353,5	script	Admin beta#ms01	4_EP17_BASIC_B,{
 			mes "Shouldn't you leave the job to the experts? Let's leave it to the experts who are a bit more specialized in dealing with monsters. It is our judgment that there is no one other than the customer who can handle this difficult task.";
 			next;
 			mes "[Admin beta]";
-			mes "Besides, not all artificial habitats are open, but only the most urgent cold, flame, grassland, and death specimen environments, so the burden will be small.";
+			mes "Besides, not all artificial habitats are open, but only the most urgent ice, fire, grass, and death specimen environments, so the burden will be small.";
 			next;
 			mes "[Admin beta]";
 			mes "You may own anything you got from the artificial habitat. One more here.";
@@ -95,7 +95,7 @@ ba_in01,252,353,5	script	Admin beta#ms01	4_EP17_BASIC_B,{
 			mes "Rare items obtained from monsters will be made into strong equipment <NAVI>[here]<INFO>ba_in01,362,48,0,101,0</INFO></NAVI>, so it would be a good idea to take a look at them as adventurers. It's a mutual aid to the last degree.";
 			close;
 		case 2:
-			switch( select( "Sample environment - ^0000cdIce^000000", "Sample environment - ^ff0000Fire^000000", "Sample environment - ^006600Grassland^000000", "Sample environment - ^660099Death^000000", "Equipment Combination" ) ) {
+			switch( select( "Sample environment - ^0000cdIce^000000", "Sample environment - ^ff0000Fire^000000", "Sample environment - ^006600Grass^000000", "Sample environment - ^660099Death^000000", "Equipment Combination" ) ) {
 			case 1:
 				mes "[Admin beta]";
 				mes "Sample Environment - <FONT COLOR = 0000cd><B>Ice</B></FONT>";
@@ -265,7 +265,7 @@ ba_in01,363,53,5	script	Beta#ms04	4_EP17_BASKET,3,3,{
 	mes "You can enchant up to 2 times if you bring a rune that matches the property of each equipment and a small fee. You can also reset the enchantment.";
 	next;
 	setarray .@index[0],16,17,18,19,57,58,59;
-	.@s = select( "Grassland Equipment Enchantment", "Fire Equipment Enchantment", "Ice Equipment Enchantment", "Death Equipment Enchantment", "Soul Equipment Enchantment", "Poison Equipment Enchantment", "Church Equipment Enchantment" ) - 1;
+	.@s = select( "Grass Equipment Enchantment", "Fire Equipment Enchantment", "Ice Equipment Enchantment", "Death Equipment Enchantment", "Soul Equipment Enchantment", "Poison Equipment Enchantment", "Holy Equipment Enchantment" ) - 1;
 	mes "[Beta]";
 	mes "Okay, I'll help you enchant right away.";
 	close2;
@@ -293,7 +293,7 @@ ba_in01,368,55,5	script	Beta#ms05	MD_BETA_SCISSORE_NG,3,3,{
 	mes "However, ^0000cdVarmundt Soul, Deadly Poison, and Temple Ring retain only cards and enchantments^000000.";
 	mes "Then, run! Is it?";
 	next;
-	switch( select( "Upgrade Grassland Gear", "Upgrade Fire Gear", "Upgrade Ice Gear", "Upgrade Death Gear", "Upgrade Sooul Gear", "Upgrade Venom Gear", "Upgrade Temple Gear" ) ) {
+	switch( select( "Upgrade Grass Gear", "Upgrade Fire Gear", "Upgrade Ice Gear", "Upgrade Death Gear", "Upgrade Soul Gear", "Upgrade Poison Gear", "Upgrade Holy Gear" ) ) {
 	case 1:
 		.@item_id = 101769;	// Varmundt_Plain_Reform
 		break;
@@ -379,7 +379,7 @@ ba_in01,371,55,5	script	Beta#ms06	EP17_2_BETA_ITEMKEEPER,3,3,{
 	mes "If you bring everything, we can enchant it up to three times. Reset is also possible.";
 	next;
 	setarray .@index[0],52,53,54,55,60,61,62;
-	.@s = select( "Grassland Equipment Enchantment", "Fire Equipment Enchantment", "Ice Equipment Enchantment", "Death Equipment Enchantment", "Soul Equipment Enchantment", "Poison Equipment Enchantment", "Temple Equipment Enchantment" ) - 1 ;
+	.@s = select( "Grass Equipment Enchantment", "Fire Equipment Enchantment", "Ice Equipment Enchantment", "Death Equipment Enchantment", "Soul Equipment Enchantment", "Poison Equipment Enchantment", "Holy Equipment Enchantment" ) - 1 ;
 	mes "[Beta]";
 	mes "Excellent choice. I'll help you right away.";
 	close2;
