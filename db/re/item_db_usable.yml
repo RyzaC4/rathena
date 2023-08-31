@@ -58963,6 +58963,7 @@ Body:
     AegisName: Odin_itembox
     Name: Odin Relic
     Type: Usable
+    Buy: 20
     Weight: 100
     Flags:
       Container: true
@@ -59003,6 +59004,7 @@ Body:
       Container: true
     Script: |
       getgroupitem(IG_BIO_REACTANT_BOX);
+      getrandgroupitem(IG_Odin_Relic,1,1,1);
   - Id: 100000
     AegisName: IDTest_Special
     Name: IDTest Special

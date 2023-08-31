@@ -6843,6 +6843,7 @@
 	export_constant(IG_CLASS_SHADOW_EA_CUBE);
 	export_constant(IG_ENCHANT_STONE_BOX30);
 	export_constant(IG_ENCHANT_STONE_BOX31);
+	export_constant(IG_ODIN_RELIC);
 
 	/* unit stop walking */
 	export_constant(USW_NONE);
