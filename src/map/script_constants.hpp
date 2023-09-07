@@ -1892,6 +1892,7 @@
 	export_constant(SC_RELIEVE_OFF);
 	export_constant(SC_RUSH_QUAKE1);
 	export_constant(SC_RUSH_QUAKE2);
+	export_constant(SC_G_LIFEPOTION);
 
 
 	// Hyper Novice
@@ -4287,6 +4288,7 @@
 	export_constant(RC2_EP172ALPHA);
 	export_constant(RC2_EP172BETA);
 	export_constant(RC2_EP172BATH);
+	export_constant(RC2_ILLUSION_TURTLE);
 	export_constant(RC2_MAX);
 
 	/* monster ai */

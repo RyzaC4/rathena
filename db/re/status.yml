@@ -1,4 +1,5 @@
 # This file is a part of rAthena.
+# This file is a part of rAthena.
 #   Copyright(C) 2022 rAthena Development Team
 #   https://rathena.org - https://github.com/rathena
 #
@@ -2888,22 +2889,12 @@ Body:
       NoDispell: true
       NoBanishingBuster: true
       NoClearance: true
-    EndOnStart:
-      L_Lifepotion: true
-      M_Lifepotion: true
-    Fail:
-      S_Lifepotion: true
   - Status: L_Lifepotion
     Icon: EFST_L_LIFEPOTION
     Flags:
       NoDispell: true
       NoBanishingBuster: true
       NoClearance: true
-    EndOnStart:
-      S_Lifepotion: true
-      M_Lifepotion: true
-    Fail:
-      L_Lifepotion: true
   - Status: Jexpboost
     Icon: EFST_CASH_PLUSONLYJOBEXP
     Flags:
@@ -8316,19 +8307,12 @@ Body:
       NoDispell: true
       NoBanishingBuster: true
       NoClearance: true
-    EndOnStart:
-      S_Lifepotion: true
-      L_Lifepotion: true
-    Fail:
-      M_Lifepotion: true
   - Status: S_Manapotion
     Icon: EFST_S_MANAPOTION
     Flags:
       NoDispell: true
       NoBanishingBuster: true
       NoClearance: true
-    Fail:
-      S_Manapotion: true
   - Status: Sub_Weaponproperty
     Flags:
       NoBanishingBuster: true
@@ -8341,12 +8325,6 @@ Body:
   - Status: Almighty
     Icon: EFST_ALMIGHTY
     CalcFlags:
-      Str: true
-      Agi: true
-      Vit: true
-      Int: true
-      Dex: true
-      Luk: true
       Batk: true
       Matk: true
     Flags:
@@ -8356,12 +8334,6 @@ Body:
       NoBanishingBuster: true
       NoClearance: true
     EndOnStart:
-      Food_Str_Cash: true
-      Food_Agi_Cash: true
-      Food_Vit_Cash: true
-      Food_Int_Cash: true
-      Food_Dex_Cash: true
-      Food_Luk_Cash: true
       UltimateCook: true
   - Status: UltimateCook
     Icon: EFST_ULTIMATECOOK
@@ -9192,3 +9164,9 @@ Body:
     DurationLookup: SOA_SOUL_OF_HEAVEN_AND_EARTH
     CalcFlags:
       Smatk: true
+  - Status: G_LIFEPOTION
+    Icon: EFST_G_LIFEPOTION
+    Flags:
+      NoDispell: true
+      NoBanishingBuster: true
+      NoClearance: true
