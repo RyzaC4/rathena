@@ -30,15 +30,8 @@ if %ERRORLEVEL%==0 (
     if !ERRORLEVEL!==0 (
         echo   Git repo detected. Recommended:
         echo     git fetch origin
-        echo     git checkout cursor/fake-player-engine-66ff
-        echo     git pull origin cursor/fake-player-engine-66ff
-        echo.
-        set /p DO_PULL=Pull branch now? [y/N]:
-        if /i "!DO_PULL!"=="y" (
-            git fetch origin
-            git checkout cursor/fake-player-engine-66ff
-            git pull origin cursor/fake-player-engine-66ff
-        )
+        echo     git pull origin master
+        echo   Or run: tools\merge_fake_player_server.bat
     )
 ) else (
     echo   Git not found - copy files from PR manually or apply patch:
