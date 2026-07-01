@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Source Files\fake_player">
+      <UniqueIdentifier>{A1B2C3D4-E5F6-7890-ABCD-EF1234567890}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="achievement.hpp">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="elemental.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fake_player.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="guild.hpp">
@@ -195,6 +201,15 @@
     </ClCompile>
     <ClCompile Include="elemental.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="fake_player\fake_player_ai.cpp">
+      <Filter>Source Files\fake_player</Filter>
+    </ClCompile>
+    <ClCompile Include="fake_player\fake_player_core.cpp">
+      <Filter>Source Files\fake_player</Filter>
+    </ClCompile>
+    <ClCompile Include="fake_player\fake_player_db.cpp">
+      <Filter>Source Files\fake_player</Filter>
     </ClCompile>
     <ClCompile Include="guild.cpp">
       <Filter>Source Files</Filter>

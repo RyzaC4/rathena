@@ -1,0 +1,1800 @@
+diff --git a/conf/battle/fake_player.conf b/conf/battle/fake_player.conf
+new file mode 100644
+index 000000000..796a7112d
+--- /dev/null
++++ b/conf/battle/fake_player.conf
+@@ -0,0 +1,56 @@
++// Fake Player Engine - central behavior configuration
++// Reload: @reloadfakeplayerdb
++
++fake_player_enable: yes
++
++// Population cap (hardware dependent)
++fake_max_population: 200
++
++// AI brain tick interval (ms) — 1000 = once per second
++fake_ai_tick_rate: 1000
++
++// Scan ranges (cells)
++fake_scan_mob_distance: 15
++fake_scan_item_distance: 10
++
++// Natural walk
++fake_walk_distance_min: 3
++fake_walk_distance_max: 9
++fake_idle_time_min: 1000
++fake_idle_time_max: 3000
++
++// Recovery thresholds (%)
++fake_sit_hp_percent: 30
++fake_sit_sp_percent: 30
++fake_potion_hp_percent: 70
++fake_potion_sp_percent: 70
++fake_potion_heal_amount: 325
++fake_potion_sp_amount: 40
++
++// Loot
++fake_loot_speed: 400
++fake_prioritize_loot: yes
++
++// Social / combat ethics
++fake_anti_ks: yes
++fake_teleport_on_idle_seconds: 7
++
++// Emotes (% chance)
++fake_emote_on_kill_rate: 25
++fake_emote_on_lowhp_rate: 15
++
++// Town hub on death / rebirth
++fake_town_map: prontera
++fake_town_x: 156
++fake_town_y: 180
++
++// Support whisper buff cooldown (ms)
++fake_support_buff_cooldown: 3000
++
++// SQL autosave interval (ms)
++fake_sql_save_interval: 30000
++
++// NLP bridge (optional external Python) — 0 = disabled
++fake_nlp_enable: no
++fake_nlp_host: 127.0.0.1
++fake_nlp_port: 8765
+diff --git a/conf/battle_athena.conf b/conf/battle_athena.conf
+index fe03deb7e..230de2877 100644
+--- a/conf/battle_athena.conf
++++ b/conf/battle_athena.conf
+@@ -6,6 +6,8 @@
+ //--------------------------------------------------------------
+ 
+ //General battle-related settings.
++import: conf/battle/fake_player.conf
++
+ import: conf/battle/battle.conf
+ 
+ //Settings specific to the client.
+diff --git a/db/fake_player/fake_equip_db.txt b/db/fake_player/fake_equip_db.txt
+new file mode 100644
+index 000000000..3082a0058
+--- /dev/null
++++ b/db/fake_player/fake_equip_db.txt
+@@ -0,0 +1,14 @@
++// Fake Player Equipment Database
++// Class,EquipIndex,ItemID,Refine,Card1,Card2,Card3,Card4
++// EquipIndex: same as EQI_* (7=head_top, 8=head_mid, 9=head_low, 10=armor, etc.)
++0,10,2301,0,0,0,0,0
++0,2,2401,0,0,0,0,0
++1,10,2303,4,0,0,0,0
++1,2,2403,4,0,0,0,0
++1,0,1101,7,0,0,0,0
++5,10,2305,5,0,0,0,0
++5,2,2405,5,0,0,0,0
++5,0,1701,7,0,0,0,0
++9,10,2312,5,0,0,0,0
++9,2,2412,5,0,0,0,0
++9,0,1201,7,0,0,0,0
+diff --git a/db/fake_player/fake_map_db.txt b/db/fake_player/fake_map_db.txt
+new file mode 100644
+index 000000000..10d057b5e
+--- /dev/null
++++ b/db/fake_player/fake_map_db.txt
+@@ -0,0 +1,25 @@
++// Fake Player Map Database
++// Format: MinLV,MaxLV,MapName,X,Y  (X/Y 0 = random walkable cell)
++1,30,prt_fild01,0,0
++1,30,prt_fild02,0,0
++1,30,prt_fild03,0,0
++1,30,prt_fild04,0,0
++1,30,prt_fild05,0,0
++1,30,prt_fild06,0,0
++1,30,prt_fild07,0,0
++1,30,prt_fild08,0,0
++1,30,prt_fild09,0,0
++1,30,prt_fild10,0,0
++1,30,prt_fild11,0,0
++31,55,mjolnir_01,0,0
++31,55,mjolnir_02,0,0
++31,55,gef_fild00,0,0
++31,55,gef_fild01,0,0
++56,75,gef_fild02,0,0
++56,75,gef_fild03,0,0
++56,75,mjolnir_12,0,0
++76,85,gef_fild10,0,0
++76,85,gef_fild11,0,0
++86,99,lhz_dun03,0,0
++86,99,abyss_03,0,0
++86,99,thor_v03,0,0
+diff --git a/db/fake_player/fake_skill_db.txt b/db/fake_player/fake_skill_db.txt
+new file mode 100644
+index 000000000..44aa2b5a3
+--- /dev/null
++++ b/db/fake_player/fake_skill_db.txt
+@@ -0,0 +1,18 @@
++// Fake Player Skill Database
++// ClassID,State,SkillID,SkillLV,Rate,CastTime,Delay,Target
++// State: 0=idle 1=attack 2=walk
++// Target: 0=self 1=enemy 2=friend
++0,1,5,10,100,0,1000,1
++0,1,7,10,80,0,1000,1
++4,1,11,10,100,0,800,1
++4,1,14,10,60,0,1200,1
++8,1,20,10,100,0,900,1
++8,1,21,10,70,0,1100,1
++12,1,42,10,100,0,700,1
++12,1,46,10,80,0,900,1
++3,2,29,10,100,0,0,0
++3,2,34,10,100,0,0,0
++4,2,34,10,100,0,0,0
++8,2,34,10,100,0,0,0
++3,0,33,10,100,0,0,2
++3,0,34,10,100,0,0,2
+diff --git a/sql-files/fake_player/main.sql b/sql-files/fake_player/main.sql
+new file mode 100644
+index 000000000..eab7784f2
+--- /dev/null
++++ b/sql-files/fake_player/main.sql
+@@ -0,0 +1,58 @@
++-- Fake Player Engine - dedicated persistence (separate from char/login tables)
++-- Import: mysql -u root -p ragnarok < sql-files/fake_player/main.sql
++
++CREATE TABLE IF NOT EXISTS `fake_player` (
++  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
++  `char_name` VARCHAR(24) NOT NULL,
++  `account_id` INT UNSIGNED NOT NULL,
++  `char_id` INT UNSIGNED NOT NULL,
++  `sex` ENUM('M','F') NOT NULL DEFAULT 'M',
++  `class` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
++  `base_level` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
++  `job_level` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
++  `str` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
++  `agi` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
++  `vit` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
++  `int` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
++  `dex` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
++  `luk` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
++  `hair` TINYINT UNSIGNED NOT NULL DEFAULT 1,
++  `hair_color` TINYINT UNSIGNED NOT NULL DEFAULT 0,
++  `clothes_color` TINYINT UNSIGNED NOT NULL DEFAULT 0,
++  `map` VARCHAR(24) NOT NULL DEFAULT 'prontera',
++  `x` SMALLINT NOT NULL DEFAULT 156,
++  `y` SMALLINT NOT NULL DEFAULT 180,
++  `hp` INT UNSIGNED NOT NULL DEFAULT 40,
++  `max_hp` INT UNSIGNED NOT NULL DEFAULT 40,
++  `sp` INT UNSIGNED NOT NULL DEFAULT 11,
++  `max_sp` INT UNSIGNED NOT NULL DEFAULT 11,
++  `active` TINYINT UNSIGNED NOT NULL DEFAULT 1,
++  `last_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
++  PRIMARY KEY (`id`),
++  UNIQUE KEY `uk_char_name` (`char_name`),
++  UNIQUE KEY `uk_account_id` (`account_id`),
++  UNIQUE KEY `uk_char_id` (`char_id`),
++  KEY `idx_active` (`active`)
++) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
++
++CREATE TABLE IF NOT EXISTS `fake_player_equip` (
++  `char_id` INT UNSIGNED NOT NULL,
++  `equip_index` TINYINT UNSIGNED NOT NULL,
++  `nameid` INT UNSIGNED NOT NULL,
++  `refine` TINYINT UNSIGNED NOT NULL DEFAULT 0,
++  `card0` INT UNSIGNED NOT NULL DEFAULT 0,
++  `card1` INT UNSIGNED NOT NULL DEFAULT 0,
++  `card2` INT UNSIGNED NOT NULL DEFAULT 0,
++  `card3` INT UNSIGNED NOT NULL DEFAULT 0,
++  PRIMARY KEY (`char_id`, `equip_index`)
++) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
++
++CREATE TABLE IF NOT EXISTS `fake_player_log` (
++  `log_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
++  `char_name` VARCHAR(24) NOT NULL,
++  `event_type` VARCHAR(32) NOT NULL,
++  `event_data` VARCHAR(255) DEFAULT NULL,
++  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
++  PRIMARY KEY (`log_id`),
++  KEY `idx_created` (`created_at`)
++) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+diff --git a/src/custom/atcommand.inc b/src/custom/atcommand.inc
+index 9dd4a3856..f531c19c1 100644
+--- a/src/custom/atcommand.inc
++++ b/src/custom/atcommand.inc
+@@ -1,19 +1,26 @@
+-// Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
+-// For more information, see LICENCE in the main folder
++ACMD_FUNC(reloadfakeplayerdb) {
++	nullpo_retr(-1, sd);
++	fake_player_reload_db();
++	clif_displaymessage(fd, "Fake Player databases reloaded.");
++	return 0;
++}
+ 
+-/**
+- * Custom Atcommands
+- * Place the body of custom atcommands in this file.
+- * Format:
+- *	ACMD_FUNC(command_name)
+- *	{
+- *		<code>;
+- *	}
+- **/
++ACMD_FUNC(fakeplayer) {
++	nullpo_retr(-1, sd);
++	int n = fake_player_maintain_population();
++	char buf[128];
++	snprintf(buf, sizeof(buf), "Fake Player: active=%u, spawned=%d (max %d).",
++		fp_engine.active_count, n, battle_config.fake_max_population);
++	clif_displaymessage(fd, buf);
++	return 0;
++}
+ 
+-//ACMD_FUNC(newcommand)
+-//{
+-//	clif_displaymessage(fd, "It works!");
+-//	clif_specialeffect(&sd->bl, EF_HEARTCASTING, AREA);
+-//	return 0;
+-//}
++ACMD_FUNC(fakeplayerstats) {
++	nullpo_retr(-1, sd);
++	char buf[128];
++	snprintf(buf, sizeof(buf), "Fake Players: %u / %d | map zones: %zu | skills: %zu | equips: %zu",
++		fp_engine.active_count, battle_config.fake_max_population,
++		fp_engine.map_zones.size(), fp_engine.skills.size(), fp_engine.equips.size());
++	clif_displaymessage(fd, buf);
++	return 0;
++}
+diff --git a/src/custom/atcommand_def.inc b/src/custom/atcommand_def.inc
+index 54d9e74ba..4bd3123a7 100644
+--- a/src/custom/atcommand_def.inc
++++ b/src/custom/atcommand_def.inc
+@@ -1,11 +1,3 @@
+-// Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
+-// For more information, see LICENCE in the main folder
+-
+-/**
+- * Custom Atcommands
+- * Place the definition of custom atcommands in this file.
+- * Format:
+- *	ACMD_DEF(command_name),
+- **/
+-
+-//ACMD_DEF(newcommand),
++ACMD_DEF(reloadfakeplayerdb),
++ACMD_DEF(fakeplayer),
++ACMD_DEF(fakeplayerstats),
+diff --git a/src/custom/battle_config_init.inc b/src/custom/battle_config_init.inc
+index e47aca9be..97b3a9905 100644
+--- a/src/custom/battle_config_init.inc
++++ b/src/custom/battle_config_init.inc
+@@ -1,13 +1,27 @@
+-// Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
+-// For more information, see LICENCE in the main folder
+-
+-/**
+- * Custom battle config initializations
+- * Place the definition of custom battle configuration initializations in this file.
+- *
+- * Do not forget to add a comma at the end of the line, if you want to add another config
+- *
+- * Format:
+- *	 { "name", &battle_config.<variable name>, <default value>, <minimum value>, <maximum value> },
+- **/
+-
++	{ "fake_player_enable",                 &battle_config.fake_player_enable,                 1,      0,      1,              },
++	{ "fake_max_population",                &battle_config.fake_max_population,                200,    0,      5000,           },
++	{ "fake_ai_tick_rate",                  &battle_config.fake_ai_tick_rate,                  1000,   200,    10000,          },
++	{ "fake_scan_mob_distance",             &battle_config.fake_scan_mob_distance,             15,     1,      30,             },
++	{ "fake_scan_item_distance",            &battle_config.fake_scan_item_distance,            10,     1,      30,             },
++	{ "fake_walk_distance_min",             &battle_config.fake_walk_distance_min,             3,      1,      20,             },
++	{ "fake_walk_distance_max",             &battle_config.fake_walk_distance_max,             9,      1,      30,             },
++	{ "fake_idle_time_min",                 &battle_config.fake_idle_time_min,                 1000,   0,      60000,          },
++	{ "fake_idle_time_max",                 &battle_config.fake_idle_time_max,                 3000,   0,      60000,          },
++	{ "fake_sit_hp_percent",                &battle_config.fake_sit_hp_percent,                30,     1,      99,             },
++	{ "fake_sit_sp_percent",                &battle_config.fake_sit_sp_percent,                30,     1,      99,             },
++	{ "fake_potion_hp_percent",             &battle_config.fake_potion_hp_percent,             70,     1,      99,             },
++	{ "fake_potion_sp_percent",             &battle_config.fake_potion_sp_percent,             70,     1,      99,             },
++	{ "fake_potion_heal_amount",            &battle_config.fake_potion_heal_amount,            325,    1,      100000,         },
++	{ "fake_potion_sp_amount",              &battle_config.fake_potion_sp_amount,              40,     1,      100000,         },
++	{ "fake_loot_speed",                    &battle_config.fake_loot_speed,                    400,    100,    5000,           },
++	{ "fake_prioritize_loot",               &battle_config.fake_prioritize_loot,               1,      0,      1,              },
++	{ "fake_anti_ks",                       &battle_config.fake_anti_ks,                       1,      0,      1,              },
++	{ "fake_teleport_on_idle_seconds",      &battle_config.fake_teleport_on_idle_seconds,      7,      1,      120,            },
++	{ "fake_emote_on_kill_rate",            &battle_config.fake_emote_on_kill_rate,            25,     0,      100,            },
++	{ "fake_emote_on_lowhp_rate",           &battle_config.fake_emote_on_lowhp_rate,           15,     0,      100,            },
++	{ "fake_town_x",                        &battle_config.fake_town_x,                      156,    0,      512,            },
++	{ "fake_town_y",                        &battle_config.fake_town_y,                      180,    0,      512,            },
++	{ "fake_support_buff_cooldown",         &battle_config.fake_support_buff_cooldown,         3000,   500,    60000,          },
++	{ "fake_sql_save_interval",             &battle_config.fake_sql_save_interval,             30000,  5000,   600000,         },
++	{ "fake_nlp_enable",                    &battle_config.fake_nlp_enable,                  0,      0,      1,              },
++	{ "fake_nlp_port",                      &battle_config.fake_nlp_port,                    8765,   1,      65535,          },
+diff --git a/src/custom/battle_config_struct.inc b/src/custom/battle_config_struct.inc
+index 017d99d07..a830e1acf 100644
+--- a/src/custom/battle_config_struct.inc
++++ b/src/custom/battle_config_struct.inc
+@@ -1,14 +1,29 @@
+-// Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
+-// For more information, see LICENCE in the main folder
+-
+-/**
+- * Custom battle config structure
+- * Place the definition of custom battle configuration structure members in this file.
+- *
+- * Make sure that the name you want is not already taken by looking into battle.hpp
+- * Do not forget to add initilization logic to battle_config_init.inc
+- *
+- * Format:
+- *	 <datatype> name;
+- **/
+-
++	int fake_player_enable;
++	int fake_max_population;
++	int fake_ai_tick_rate;
++	int fake_scan_mob_distance;
++	int fake_scan_item_distance;
++	int fake_walk_distance_min;
++	int fake_walk_distance_max;
++	int fake_idle_time_min;
++	int fake_idle_time_max;
++	int fake_sit_hp_percent;
++	int fake_sit_sp_percent;
++	int fake_potion_hp_percent;
++	int fake_potion_sp_percent;
++	int fake_potion_heal_amount;
++	int fake_potion_sp_amount;
++	int fake_loot_speed;
++	int fake_prioritize_loot;
++	int fake_anti_ks;
++	int fake_teleport_on_idle_seconds;
++	int fake_emote_on_kill_rate;
++	int fake_emote_on_lowhp_rate;
++	char fake_town_map[MAP_NAME_LENGTH_EXT];
++	int fake_town_x;
++	int fake_town_y;
++	int fake_support_buff_cooldown;
++	int fake_sql_save_interval;
++	int fake_nlp_enable;
++	char fake_nlp_host[32];
++	int fake_nlp_port;
+diff --git a/src/map/CMakeLists.txt b/src/map/CMakeLists.txt
+index ba3749a32..524608780 100644
+--- a/src/map/CMakeLists.txt
++++ b/src/map/CMakeLists.txt
+@@ -11,6 +11,8 @@ if( BUILD_SERVERS )
+ message( STATUS "Creating target map-server" )
+ file(GLOB MAP_HEADERS ${MAP_SOURCE_DIR}/*.hpp)
+ file(GLOB MAP_SOURCES ${MAP_SOURCE_DIR}/*.cpp)
++file(GLOB FAKE_PLAYER_SOURCES ${MAP_SOURCE_DIR}/fake_player/*.cpp)
++set( MAP_SOURCES ${MAP_SOURCES} ${FAKE_PLAYER_SOURCES} )
+ set( DEPENDENCIES common ryml)
+ set( LIBRARIES ${GLOBAL_LIBRARIES})
+ set( INCLUDE_DIRS ${GLOBAL_INCLUDE_DIRS} ${COMMON_BASE_INCLUDE_DIRS} ${RA_INCLUDE_DIRS} )
+diff --git a/src/map/Makefile.in b/src/map/Makefile.in
+index 66952241c..259073721 100644
+--- a/src/map/Makefile.in
++++ b/src/map/Makefile.in
+@@ -18,7 +18,7 @@ RAPIDYAML_INCLUDE = -I../../3rdparty/rapidyaml/src -I../../3rdparty/rapidyaml/ex
+ NLOHMANN_H = $(shell find ../../3rdparty/json/include/nlohmann/ -type f -name "*.hpp")
+ NLOHMANN_INCLUDE = -I../../3rdparty/json/include
+ 
+-MAP_OBJ = $(shell ls *.cpp | sed -e "s/\.cpp/\.o/g")
++MAP_OBJ = $(shell ls *.cpp fake_player/*.cpp 2>/dev/null | sed -e "s/\.cpp/\.o/g")
+ #MAP_OBJ += $(shell ls *.c | sed -e "s/\.c/\.o/g")
+ MAP_DIR_OBJ = $(MAP_OBJ:%=obj/%)
+ MAP_GEN_DIR_OBJ = $(MAP_OBJ:%=obj-gen/%)
+@@ -76,7 +76,7 @@ needs_mysql:
+ 
+ obj:
+ 	@echo "	MKDIR	obj"
+-	@-mkdir obj
++	@-mkdir -p obj/fake_player
+ 
+ obj-gen:
+ 	@echo "	MDIR	obj-gen"
+diff --git a/src/map/atcommand.cpp b/src/map/atcommand.cpp
+index ff5f07be7..97373b575 100644
+--- a/src/map/atcommand.cpp
++++ b/src/map/atcommand.cpp
+@@ -10901,6 +10901,8 @@ ACMD_FUNC(setcard)
+ 	return 0;
+ }
+ 
++#include "fake_player.hpp"
++
+ #include <custom/atcommand.inc>
+ 
+ /**
+diff --git a/src/map/chrif.cpp b/src/map/chrif.cpp
+index 0e447afec..5be2b622a 100644
+--- a/src/map/chrif.cpp
++++ b/src/map/chrif.cpp
+@@ -19,6 +19,7 @@
+ #include "clan.hpp"
+ #include "clif.hpp"
+ #include "elemental.hpp"
++#include "fake_player.hpp"
+ #include "guild.hpp"
+ #include "homunculus.hpp"
+ #include "instance.hpp"
+@@ -279,6 +280,11 @@ int chrif_save(map_session_data *sd, int flag) {
+ 
+ 	nullpo_retr(-1, sd);
+ 
++	if (IS_FAKE_PLAYER(sd)) {
++		fake_player_sql_save(sd);
++		return 0;
++	}
++
+ 	pc_makesavestatus(sd);
+ 
+ 	if ( (flag&CSAVE_QUITTING) && sd->state.active) { //Store player data which is quitting
+diff --git a/src/map/clif.cpp b/src/map/clif.cpp
+index 991b5b1b8..b1aab2830 100644
+--- a/src/map/clif.cpp
++++ b/src/map/clif.cpp
+@@ -35,6 +35,7 @@
+ #include "clan.hpp"
+ #include "clif.hpp"
+ #include "elemental.hpp"
++#include "fake_player.hpp"
+ #include "guild.hpp"
+ #include "homunculus.hpp"
+ #include "instance.hpp"
+@@ -12025,6 +12026,8 @@ void clif_parse_WisMessage(int fd, map_session_data* sd)
+ 	// notify sender of success
+ 	clif_wis_end(fd, 0); // 0: success to send wisper
+ 
++	fake_player_on_whisper(dstsd, sd, message);
++
+ 	// Normal message
+ 	clif_wis_message(dstsd, sd->status.name, message, strlen(message)+1, 0);
+ }
+diff --git a/src/map/fake_player.hpp b/src/map/fake_player.hpp
+new file mode 100644
+index 000000000..a913a6243
+--- /dev/null
++++ b/src/map/fake_player.hpp
+@@ -0,0 +1,123 @@
++// Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
++// Fake Player Engine - synthetic population with C++ AI core
++
++#ifndef FAKE_PLAYER_HPP
++#define FAKE_PLAYER_HPP
++
++#include <cstdint>
++#include <string>
++#include <unordered_map>
++#include <vector>
++
++#include <common/cbasetypes.hpp>
++#include <common/mmo.hpp>
++#include <common/timer.hpp>
++
++struct map_session_data;
++struct block_list;
++struct flooritem_data;
++
++#define FAKE_PLAYER_ACCOUNT_ID_BASE 96000000u
++#define FAKE_PLAYER_ACCOUNT_ID_END  97000000u
++#define FAKE_PLAYER_CHAR_ID_BASE    96000000u
++
++#define IS_FAKE_PLAYER_ACCOUNT_ID(account_id) \
++	((account_id) >= FAKE_PLAYER_ACCOUNT_ID_BASE && (account_id) < FAKE_PLAYER_ACCOUNT_ID_END)
++
++#define IS_FAKE_PLAYER(sd) \
++	((sd) != nullptr && IS_FAKE_PLAYER_ACCOUNT_ID((sd)->status.account_id))
++
++enum e_fp_ai_state : uint8 {
++	FP_STATE_IDLE = 0,
++	FP_STATE_WALK,
++	FP_STATE_HUNT,
++	FP_STATE_LOOT,
++	FP_STATE_RECOVER,
++	FP_STATE_SOCIAL,
++};
++
++struct s_fp_map_zone {
++	int16 min_lv;
++	int16 max_lv;
++	std::string map;
++	int16 x;
++	int16 y;
++};
++
++struct s_fp_skill_entry {
++	uint16 class_id;
++	uint8 state;
++	uint16 skill_id;
++	uint16 skill_lv;
++	uint16 rate;
++	int32 casttime;
++	int32 delay;
++	uint8 target;
++};
++
++struct s_fp_equip_entry {
++	uint16 class_id;
++	int16 equip_index;
++	t_itemid nameid;
++	uint8 refine;
++	t_itemid card[4];
++};
++
++struct fake_player_runtime {
++	uint32 db_id;
++	uint32 index;
++	e_fp_ai_state ai_state;
++	int target_id;
++	t_tick last_tick;
++	t_tick last_mob_scan;
++	t_tick last_save;
++	t_tick buff_cooldown;
++	t_tick loot_timer;
++	uint16 idle_seconds;
++	bool overweight_lock;
++};
++
++struct fake_player_engine {
++	std::vector<s_fp_map_zone> map_zones;
++	std::vector<s_fp_skill_entry> skills;
++	std::vector<s_fp_equip_entry> equips;
++	std::unordered_map<uint32, fake_player_runtime> runtime; // char_id -> runtime
++	uint32 active_count;
++};
++
++extern fake_player_engine fp_engine;
++
++// Lifecycle
++void do_init_fake_player(void);
++void do_final_fake_player(void);
++void fake_player_reload_db(void);
++
++// Spawn / population
++int fake_player_spawn_from_db(void);
++int fake_player_maintain_population(void);
++bool fake_player_spawn_shell(uint32 index);
++void fake_player_despawn(map_session_data *sd, bool save);
++
++// Persistence
++bool fake_player_sql_save(map_session_data *sd);
++bool fake_player_sql_create(uint32 index, const char *name);
++
++// Hooks (called from core map code)
++void fake_player_on_pc_dead(map_session_data *sd, struct block_list *src);
++void fake_player_on_levelup(map_session_data *sd);
++void fake_player_on_map_quit(map_session_data *sd);
++void fake_player_on_whisper(map_session_data *dstsd, map_session_data *srcsd, const char *message);
++bool fake_player_block_trade_party(map_session_data *sd, map_session_data *tsd);
++
++// AI
++TIMER_FUNC(fake_player_ai_timer);
++void fake_player_ai_start(map_session_data *sd);
++
++void fake_player_force_quit(map_session_data *sd);
++
++// Utility
++fake_player_runtime *fake_player_runtime_get(map_session_data *sd);
++const char *fake_player_random_name(void);
++bool fake_player_pick_farm_map(map_session_data *sd, char *mapname, size_t mapname_len, int16 *x, int16 *y);
++
++#endif /* FAKE_PLAYER_HPP */
+diff --git a/src/map/fake_player/fake_player_ai.cpp b/src/map/fake_player/fake_player_ai.cpp
+new file mode 100644
+index 000000000..930cf933f
+--- /dev/null
++++ b/src/map/fake_player/fake_player_ai.cpp
+@@ -0,0 +1,307 @@
++// Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
++
++#include "../fake_player.hpp"
++
++#include <algorithm>
++#include <cmath>
++#include <cstdlib>
++#include <cstring>
++
++#include <common/nullpo.hpp>
++#include <common/random.hpp>
++#include <common/showmsg.hpp>
++#include <common/timer.hpp>
++
++#include "../battle.hpp"
++#include "../clif.hpp"
++#include "../map.hpp"
++#include "../mob.hpp"
++#include "../pc.hpp"
++#include "../skill.hpp"
++#include "../status.hpp"
++#include "../unit.hpp"
++
++static bool fp_mob_is_ks_locked(map_session_data *sd, struct block_list *mob_bl)
++{
++	nullpo_retr(false, sd);
++	nullpo_retr(false, mob_bl);
++
++	if (!battle_config.fake_anti_ks)
++		return false;
++
++	struct mob_data *md = BL_CAST(BL_MOB, mob_bl);
++	if (!md)
++		return false;
++
++	if (md->target_id > 0) {
++		struct block_list *t = map_id2bl(md->target_id);
++		if (t && t->type == BL_PC && t->id != sd->bl.id)
++			return true;
++	}
++
++	// Damage log: another player hit recently
++	for (int i = 0; i < DAMAGELOG_SIZE; i++) {
++		int32 id = md->dmglog[i].id;
++		if (id > 0 && id != sd->bl.id) {
++			struct block_list *t = map_id2bl(id);
++			if (t && t->type == BL_PC)
++				return true;
++		}
++	}
++	return false;
++}
++
++static int fp_ai_sub_mob(struct block_list *bl, va_list ap)
++{
++	map_session_data *sd = va_arg(ap, map_session_data *);
++	int *best_dist = va_arg(ap, int *);
++	int *best_id = va_arg(ap, int *);
++
++	if (!sd || bl->type != BL_MOB)
++		return 0;
++
++	if (status_isdead(bl))
++		return 0;
++
++	if (fp_mob_is_ks_locked(sd, bl))
++		return 0;
++
++	int dist = distance_bl(&sd->bl, bl);
++	if (dist > battle_config.fake_scan_mob_distance)
++		return 0;
++
++	if (*best_id == 0 || dist < *best_dist) {
++		*best_dist = dist;
++		*best_id = bl->id;
++	}
++	return 0;
++}
++
++static int fp_ai_sub_item(struct block_list *bl, va_list ap)
++{
++	map_session_data *sd = va_arg(ap, map_session_data *);
++	int *best_dist = va_arg(ap, int *);
++	int *best_id = va_arg(ap, int *);
++
++	if (!sd || bl->type != BL_ITEM)
++		return 0;
++
++	int dist = distance_bl(&sd->bl, bl);
++	if (dist > battle_config.fake_scan_item_distance)
++		return 0;
++
++	if (*best_id == 0 || dist < *best_dist) {
++		*best_dist = dist;
++		*best_id = bl->id;
++	}
++	return 0;
++}
++
++static void fp_visual_loot(map_session_data *sd, struct flooritem_data *fitem)
++{
++	nullpo_retv(sd);
++	nullpo_retv(fitem);
++	clif_takeitem(&sd->bl, &fitem->bl);
++	map_clearflooritem(&fitem->bl);
++}
++
++static void fp_try_potion(map_session_data *sd)
++{
++	nullpo_retv(sd);
++
++	int hp_pct = sd->battle_status.max_hp ? (sd->battle_status.hp * 100 / sd->battle_status.max_hp) : 100;
++	int sp_pct = sd->battle_status.max_sp ? (sd->battle_status.sp * 100 / sd->battle_status.max_sp) : 100;
++
++	if (hp_pct <= battle_config.fake_potion_hp_percent)
++		status_heal(&sd->bl, battle_config.fake_potion_heal_amount, 0, 1);
++	if (sp_pct <= battle_config.fake_potion_sp_percent)
++		status_heal(&sd->bl, 0, battle_config.fake_potion_sp_amount, 1);
++}
++
++static void fp_try_sit(map_session_data *sd)
++{
++	nullpo_retv(sd);
++
++	int hp_pct = sd->battle_status.max_hp ? (sd->battle_status.hp * 100 / sd->battle_status.max_hp) : 100;
++	int sp_pct = sd->battle_status.max_sp ? (sd->battle_status.sp * 100 / sd->battle_status.max_sp) : 100;
++
++	if (hp_pct <= battle_config.fake_sit_hp_percent || sp_pct <= battle_config.fake_sit_sp_percent) {
++		if (!pc_issit(sd)) {
++			pc_setsit(sd);
++			clif_sitting(&sd->bl);
++		}
++		return;
++	}
++
++	if (pc_issit(sd) && hp_pct >= 80 && sp_pct >= 50) {
++		if (pc_setstand(sd, false))
++			clif_standing(&sd->bl);
++	}
++}
++
++static void fp_use_class_skill(map_session_data *sd, int target_id, uint8 state)
++{
++	nullpo_retv(sd);
++
++	std::vector<const s_fp_skill_entry *> pool;
++	for (const auto &sk : fp_engine.skills) {
++		if (sk.class_id != sd->status.class_ && sk.class_id != 0)
++			continue;
++		if (sk.state != state)
++			continue;
++		if (rnd() % 100 >= sk.rate)
++			continue;
++		pool.push_back(&sk);
++	}
++	if (pool.empty())
++		return;
++
++	const s_fp_skill_entry *sk = pool[rnd() % pool.size()];
++	int tid = target_id;
++	if (sk->target == 0)
++		tid = sd->bl.id;
++	unit_skilluse_id(&sd->bl, tid, sk->skill_id, sk->skill_lv);
++}
++
++static void fp_random_walk(map_session_data *sd)
++{
++	nullpo_retv(sd);
++
++	int dx = rnd_value(battle_config.fake_walk_distance_min, battle_config.fake_walk_distance_max);
++	int dy = rnd_value(battle_config.fake_walk_distance_min, battle_config.fake_walk_distance_max);
++	if (rnd() % 2)
++		dx = -dx;
++	if (rnd() % 2)
++		dy = -dy;
++
++	int nx = sd->bl.x + dx;
++	int ny = sd->bl.y + dy;
++	if (map_getcell(sd->bl.m, nx, ny, CELL_CHKPASS))
++		unit_walktoxy(&sd->bl, nx, ny, 4);
++}
++
++static void fp_smart_teleport(map_session_data *sd)
++{
++	nullpo_retv(sd);
++
++	char mapname[MAP_NAME_LENGTH];
++	int16 x = 0, y = 0;
++	if (!fake_player_pick_farm_map(sd, mapname, sizeof(mapname), &x, &y))
++		return;
++
++	uint16 mapindex = mapindex_name2id(mapname);
++	if (!mapindex)
++		return;
++
++	if (pc_checkskill(sd, AL_TELEPORT) > 0)
++		unit_skilluse_id(&sd->bl, sd->bl.id, AL_TELEPORT, 1);
++	else
++		pc_setpos(sd, mapindex, x, y, CLR_TELEPORT);
++}
++
++static void fp_ai_tick(map_session_data *sd, fake_player_runtime *rt)
++{
++	nullpo_retv(sd);
++	nullpo_retv(rt);
++
++	t_tick now = gettick();
++	fp_try_potion(sd);
++	fp_try_sit(sd);
++
++	if (pc_issit(sd))
++		return;
++
++	// Loot priority
++	if (battle_config.fake_prioritize_loot) {
++		int item_dist = 9999, item_id = 0;
++		map_foreachinrange(fp_ai_sub_item, &sd->bl, battle_config.fake_scan_item_distance, BL_ITEM, sd, &item_dist, &item_id);
++		if (item_id > 0) {
++			struct block_list *ibl = map_id2bl(item_id);
++			struct flooritem_data *fitem = BL_CAST(BL_ITEM, ibl);
++			if (fitem) {
++				if (distance_bl(&sd->bl, ibl) <= 1) {
++					if (rt->loot_timer == 0 || DIFF_TICK(now, rt->loot_timer) >= battle_config.fake_loot_speed) {
++						fp_visual_loot(sd, fitem);
++						rt->loot_timer = now;
++					}
++					rt->ai_state = FP_STATE_LOOT;
++					return;
++				}
++				unit_walktoxy(&sd->bl, ibl->x, ibl->y, 4);
++				rt->ai_state = FP_STATE_LOOT;
++				return;
++			}
++		}
++	}
++
++	int mob_dist = 9999, mob_id = 0;
++	map_foreachinrange(fp_ai_sub_mob, &sd->bl, battle_config.fake_scan_mob_distance, BL_MOB, sd, &mob_dist, &mob_id);
++
++	if (mob_id > 0) {
++		rt->last_mob_scan = now;
++		rt->idle_seconds = 0;
++		rt->target_id = mob_id;
++		rt->ai_state = FP_STATE_HUNT;
++		if (mob_dist > 1)
++			unit_walktoxy(&sd->bl, map_id2bl(mob_id)->x, map_id2bl(mob_id)->y, 4);
++		else
++			fp_use_class_skill(sd, mob_id, 1);
++		return;
++	}
++
++	// No mobs — idle counter for teleport
++	if (rt->last_mob_scan == 0)
++		rt->last_mob_scan = now;
++	if (DIFF_TICK(now, rt->last_mob_scan) >= battle_config.fake_teleport_on_idle_seconds * 1000) {
++		fp_smart_teleport(sd);
++		rt->last_mob_scan = now;
++		rt->ai_state = FP_STATE_HUNT;
++		return;
++	}
++
++	// Natural idle / walk
++	if (rt->ai_state == FP_STATE_IDLE || rt->ai_state == FP_STATE_WALK) {
++		int idle_ms = rnd_value(battle_config.fake_idle_time_min, battle_config.fake_idle_time_max);
++		if (DIFF_TICK(now, rt->last_tick) < idle_ms) {
++			rt->ai_state = FP_STATE_IDLE;
++			return;
++		}
++		fp_random_walk(sd);
++		fp_use_class_skill(sd, sd->bl.id, 2);
++		rt->ai_state = FP_STATE_WALK;
++		rt->last_tick = now;
++		return;
++	}
++
++	fp_random_walk(sd);
++	rt->ai_state = FP_STATE_WALK;
++	rt->last_tick = now;
++}
++
++TIMER_FUNC(fake_player_ai_timer)
++{
++	map_session_data *sd = map_id2sd(id);
++	if (!sd || !IS_FAKE_PLAYER(sd))
++		return 0;
++
++	fake_player_runtime *rt = fake_player_runtime_get(sd);
++	if (!rt)
++		return 0;
++
++	fp_ai_tick(sd, rt);
++
++	if (battle_config.fake_sql_save_interval > 0 &&
++		DIFF_TICK(gettick(), rt->last_save) >= battle_config.fake_sql_save_interval) {
++		fake_player_sql_save(sd);
++		rt->last_save = gettick();
++	}
++
++	add_timer(gettick() + battle_config.fake_ai_tick_rate, fake_player_ai_timer, sd->bl.id, 0);
++	return 0;
++}
++
++void fake_player_ai_start(map_session_data *sd)
++{
++	nullpo_retv(sd);
++	add_timer(gettick() + battle_config.fake_ai_tick_rate, fake_player_ai_timer, sd->bl.id, 0);
++}
+diff --git a/src/map/fake_player/fake_player_core.cpp b/src/map/fake_player/fake_player_core.cpp
+new file mode 100644
+index 000000000..0f7b353ed
+--- /dev/null
++++ b/src/map/fake_player/fake_player_core.cpp
+@@ -0,0 +1,604 @@
++// Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
++
++#include "../fake_player.hpp"
++
++#include <algorithm>
++#include <cstdio>
++#include <cstring>
++#include <vector>
++
++#include <common/malloc.hpp>
++#include <common/nullpo.hpp>
++#include <common/random.hpp>
++#include <common/showmsg.hpp>
++#include <common/sql.hpp>
++#include <common/strlib.hpp>
++#include <common/timer.hpp>
++
++#include "../battle.hpp"
++#include "../chrif.hpp"
++#include "../clif.hpp"
++#include "../log.hpp"
++#include "../map.hpp"
++#include "../pc.hpp"
++#include "../skill.hpp"
++#include "../status.hpp"
++#include "../unit.hpp"
++
++extern Sql* mmysql_handle;
++
++fake_player_engine fp_engine;
++
++static const char *fp_name_prefix[] = {
++	"Rune", "Luna", "Kai", "Mira", "Nova", "Zen", "Aki", "Yuri", "Nara", "Bolt",
++	"Sora", "Hana", "Vex", "Rin", "Ash", "Kira", "Fox", "Ray", "Lyn", "Ace"
++};
++
++const char *fake_player_random_name(void)
++{
++	static char buf[NAME_LENGTH];
++	snprintf(buf, sizeof(buf), "%s_%04d", fp_name_prefix[rnd() % 20], rnd() % 10000);
++	return buf;
++}
++
++fake_player_runtime *fake_player_runtime_get(map_session_data *sd)
++{
++	if (!sd)
++		return nullptr;
++	auto it = fp_engine.runtime.find(sd->status.char_id);
++	if (it == fp_engine.runtime.end())
++		return nullptr;
++	return &it->second;
++}
++
++bool fake_player_pick_farm_map(map_session_data *sd, char *mapname, size_t mapname_len, int16 *x, int16 *y)
++{
++	nullpo_retr(false, sd);
++	nullpo_retr(false, mapname);
++	nullpo_retr(false, x);
++	nullpo_retr(false, y);
++
++	std::vector<const s_fp_map_zone *> pool;
++	for (const auto &z : fp_engine.map_zones) {
++		if (sd->status.base_level >= z.min_lv && sd->status.base_level <= z.max_lv)
++			pool.push_back(&z);
++	}
++	if (pool.empty())
++		return false;
++
++	const s_fp_map_zone *z = pool[rnd() % pool.size()];
++	safestrncpy(mapname, z->map.c_str(), mapname_len);
++	*x = z->x;
++	*y = z->y;
++	return true;
++}
++
++static void fp_apply_equipment(map_session_data *sd)
++{
++	nullpo_retv(sd);
++
++	for (const auto &e : fp_engine.equips) {
++		if (e.class_id != sd->status.class_ && e.class_id != 0)
++			continue;
++		if (e.equip_index < 0 || e.equip_index >= EQI_MAX)
++			continue;
++
++		struct item it = {};
++		it.nameid = e.nameid;
++		it.identify = 1;
++		it.refine = e.refine;
++		it.card[0] = e.card[0];
++		it.card[1] = e.card[1];
++		it.card[2] = e.card[2];
++		it.card[3] = e.card[3];
++
++		pc_additem(sd, &it, 1, LOG_TYPE_SCRIPT);
++		pc_equipitem(sd, sd->last_addeditem_index, pc_equippoint(sd, sd->last_addeditem_index));
++	}
++}
++
++static void fp_grant_class_skills(map_session_data *sd)
++{
++	nullpo_retv(sd);
++
++	for (const auto &sk : fp_engine.skills) {
++		if (sk.class_id != sd->status.class_ && sk.class_id != 0)
++			continue;
++		pc_skill(sd, sk.skill_id, sk.skill_lv, ADDSKILL_PERMANENT);
++	}
++}
++
++static bool fp_place_on_map(map_session_data *sd, const char *mapname, int16 x, int16 y)
++{
++	nullpo_retr(false, sd);
++
++	uint16 mapindex = mapindex_name2id(mapname);
++	if (!mapindex)
++		mapindex = mapindex_name2id(battle_config.fake_town_map);
++
++	if (!mapindex)
++		return false;
++
++	if (x <= 0 || y <= 0) {
++		int16 m = map_mapindex2mapid(mapindex);
++		if (m < 0 || !map_search_freecell(nullptr, m, &x, &y, 10, 10, 1))
++			x = y = 0;
++	}
++
++	if (pc_setpos(sd, mapindex, x, y, CLR_OUTSIGHT) != SETPOS_OK)
++		return false;
++
++	status_set_viewdata(&sd->bl, sd->status.class_);
++	pc_set_costume_view(sd);
++
++	struct map_data *mapdata = map_getmapdata(sd->bl.m);
++	if (mapdata) {
++		if (mapdata->users++ == 0 && battle_config.dynamic_mobs)
++			map_spawnmobs(sd->bl.m);
++		if (!pc_isinvisible(sd))
++			mapdata->users_pvp++;
++	}
++
++	if (map_addblock(&sd->bl))
++		return false;
++
++	clif_spawn(&sd->bl);
++	return true;
++}
++
++bool fake_player_sql_save(map_session_data *sd)
++{
++	nullpo_retr(false, sd);
++
++	fake_player_runtime *rt = fake_player_runtime_get(sd);
++	if (!rt)
++		return false;
++
++	const char *mapname = mapindex_id2name(sd->mapindex);
++	if (!mapname)
++		mapname = battle_config.fake_town_map;
++
++	if (SQL_ERROR == Sql_Query(mmysql_handle,
++		"UPDATE `fake_player` SET `class`='%d', `base_level`='%d', `job_level`='%d', "
++		"`str`='%d', `agi`='%d', `vit`='%d', `int`='%d', `dex`='%d', `luk`='%d', "
++		"`hair`='%d', `hair_color`='%d', `clothes_color`='%d', "
++		"`map`='%s', `x`='%d', `y`='%d', `hp`='%u', `max_hp`='%u', `sp`='%u', `max_sp`='%u' "
++		"WHERE `char_id`='%u'",
++		sd->status.class_, sd->status.base_level, sd->status.job_level,
++		sd->status.str, sd->status.agi, sd->status.vit, sd->status.int_, sd->status.dex, sd->status.luk,
++		sd->status.hair, sd->status.hair_color, sd->status.clothes_color,
++		mapname, sd->bl.x, sd->bl.y,
++		sd->battle_status.hp, sd->battle_status.max_hp, sd->battle_status.sp, sd->battle_status.max_sp,
++		sd->status.char_id)) {
++		Sql_ShowDebug(mmysql_handle);
++		return false;
++	}
++	return true;
++}
++
++bool fake_player_sql_create(uint32 index, const char *name)
++{
++	uint32 account_id = FAKE_PLAYER_ACCOUNT_ID_BASE + index;
++	uint32 char_id = FAKE_PLAYER_CHAR_ID_BASE + index;
++	char sex = rnd() % 2 ? 'M' : 'F';
++
++	if (SQL_ERROR == Sql_Query(mmysql_handle,
++		"INSERT INTO `fake_player` (`char_name`,`account_id`,`char_id`,`sex`,`class`,`base_level`,`job_level`,"
++		"`str`,`agi`,`vit`,`int`,`dex`,`luk`,`hair`,`hair_color`,`clothes_color`,`map`,`x`,`y`,`active`) "
++		"VALUES ('%s','%u','%u','%c','0','1','1','9','9','9','9','9','9','%d','%d','%d','%s','%d','%d','1')",
++		name, account_id, char_id, sex, rnd() % 24 + 1, rnd() % 8, rnd() % 8,
++		battle_config.fake_town_map, battle_config.fake_town_x, battle_config.fake_town_y)) {
++		Sql_ShowDebug(mmysql_handle);
++		return false;
++	}
++	return true;
++}
++
++bool fake_player_spawn_shell(uint32 index)
++{
++	uint32 account_id = FAKE_PLAYER_ACCOUNT_ID_BASE + index;
++	uint32 char_id = FAKE_PLAYER_CHAR_ID_BASE + index;
++
++	if (map_id2sd(account_id))
++		return false;
++
++	map_session_data *sd = nullptr;
++	CREATE(sd, map_session_data, 1);
++	pc_setnewpc(sd, account_id, char_id, 0, gettick(), rnd() % 2 ? SEX_MALE : SEX_FEMALE, 0);
++	sd->fd = 0;
++
++	// Load from SQL if exists
++	char name[NAME_LENGTH] = "";
++	char mapname[MAP_NAME_LENGTH] = "";
++	int16 x = 0, y = 0;
++	uint32 db_id = 0;
++
++	if (SQL_ERROR == Sql_Query(mmysql_handle,
++		"SELECT `id`,`char_name`,`sex`,`class`,`base_level`,`job_level`,"
++		"`str`,`agi`,`vit`,`int`,`dex`,`luk`,`hair`,`hair_color`,`clothes_color`,"
++		"`map`,`x`,`y` FROM `fake_player` WHERE `char_id`='%u' AND `active`=1 LIMIT 1", char_id)) {
++		Sql_ShowDebug(mmysql_handle);
++		aFree(sd);
++		return false;
++	}
++
++	if (Sql_NumRows(mmysql_handle) > 0 && SQL_SUCCESS == Sql_NextRow(mmysql_handle)) {
++		char *data;
++		Sql_GetData(mmysql_handle, 0, &data, nullptr); db_id = atoi(data);
++		Sql_GetData(mmysql_handle, 1, &data, nullptr); safestrncpy(name, data, sizeof(name));
++		Sql_GetData(mmysql_handle, 2, &data, nullptr); sd->status.sex = (data[0] == 'F') ? SEX_FEMALE : SEX_MALE;
++		Sql_GetData(mmysql_handle, 3, &data, nullptr); sd->status.class_ = atoi(data);
++		Sql_GetData(mmysql_handle, 4, &data, nullptr); sd->status.base_level = atoi(data);
++		Sql_GetData(mmysql_handle, 5, &data, nullptr); sd->status.job_level = atoi(data);
++		Sql_GetData(mmysql_handle, 6, &data, nullptr); sd->status.str = atoi(data);
++		Sql_GetData(mmysql_handle, 7, &data, nullptr); sd->status.agi = atoi(data);
++		Sql_GetData(mmysql_handle, 8, &data, nullptr); sd->status.vit = atoi(data);
++		Sql_GetData(mmysql_handle, 9, &data, nullptr); sd->status.int_ = atoi(data);
++		Sql_GetData(mmysql_handle, 10, &data, nullptr); sd->status.dex = atoi(data);
++		Sql_GetData(mmysql_handle, 11, &data, nullptr); sd->status.luk = atoi(data);
++		Sql_GetData(mmysql_handle, 12, &data, nullptr); sd->status.hair = atoi(data);
++		Sql_GetData(mmysql_handle, 13, &data, nullptr); sd->status.hair_color = atoi(data);
++		Sql_GetData(mmysql_handle, 14, &data, nullptr); sd->status.clothes_color = atoi(data);
++		Sql_GetData(mmysql_handle, 15, &data, nullptr); safestrncpy(mapname, data, sizeof(mapname));
++		Sql_GetData(mmysql_handle, 16, &data, nullptr); x = atoi(data);
++		Sql_GetData(mmysql_handle, 17, &data, nullptr); y = atoi(data);
++	}
++	Sql_FreeResult(mmysql_handle);
++
++	if (!name[0]) {
++		safestrncpy(name, fake_player_random_name(), sizeof(name));
++		fake_player_sql_create(index, name);
++		safestrncpy(mapname, battle_config.fake_town_map, sizeof(mapname));
++		x = battle_config.fake_town_x;
++		y = battle_config.fake_town_y;
++	}
++
++	safestrncpy(sd->status.name, name, NAME_LENGTH);
++	sd->status.account_id = account_id;
++	sd->status.char_id = char_id;
++	sd->group_id = 0;
++	sd->state.active = 1;
++
++	status_change_init(&sd->bl);
++	map_addiddb(&sd->bl);
++
++	if (!fp_place_on_map(sd, mapname[0] ? mapname : battle_config.fake_town_map, x, y)) {
++		map_deliddb(&sd->bl);
++		aFree(sd);
++		return false;
++	}
++
++	status_calc_pc(sd, SCO_FIRST);
++	pc_inventoryblank(sd);
++
++	sd->max_weight = 2000000; // allow virtual equipment load
++	fp_apply_equipment(sd);
++	fp_grant_class_skills(sd);
++	sd->weight = 0;
++	sd->max_weight = 0; // visual spoof: no real inventory weight
++
++	fake_player_runtime rt = {};
++	rt.db_id = db_id;
++	rt.index = index;
++	rt.ai_state = FP_STATE_SOCIAL;
++	rt.last_tick = gettick();
++	rt.last_save = gettick();
++	rt.last_mob_scan = gettick();
++	fp_engine.runtime[char_id] = rt;
++
++	fake_player_ai_start(sd);
++	fp_engine.active_count++;
++	ShowInfo("fake_player: spawned [%s] at %s (%d,%d)\n", sd->status.name, mapname, sd->bl.x, sd->bl.y);
++	return true;
++}
++
++int fake_player_spawn_from_db(void)
++{
++	int spawned = 0;
++	if (SQL_ERROR == Sql_Query(mmysql_handle,
++		"SELECT (`char_id` - %u) AS idx FROM `fake_player` WHERE `active`=1 ORDER BY `id` ASC",
++		FAKE_PLAYER_CHAR_ID_BASE)) {
++		Sql_ShowDebug(mmysql_handle);
++		return 0;
++	}
++
++	while (SQL_SUCCESS == Sql_NextRow(mmysql_handle)) {
++		char *data;
++		Sql_GetData(mmysql_handle, 0, &data, nullptr);
++		uint32 index = atoi(data);
++		if (fake_player_spawn_shell(index))
++			spawned++;
++	}
++	Sql_FreeResult(mmysql_handle);
++	return spawned;
++}
++
++int fake_player_maintain_population(void)
++{
++	if (!battle_config.fake_player_enable)
++		return 0;
++
++	int need = battle_config.fake_max_population - static_cast<int>(fp_engine.active_count);
++	int created = 0;
++
++	for (int i = 0; i < need; i++) {
++		for (uint32 idx = 1; idx < (FAKE_PLAYER_ACCOUNT_ID_END - FAKE_PLAYER_ACCOUNT_ID_BASE); idx++) {
++			uint32 char_id = FAKE_PLAYER_CHAR_ID_BASE + idx;
++			if (fp_engine.runtime.find(char_id) != fp_engine.runtime.end())
++				continue;
++			if (map_id2sd(FAKE_PLAYER_ACCOUNT_ID_BASE + idx))
++				continue;
++			if (fake_player_spawn_shell(idx)) {
++				created++;
++				break;
++			}
++		}
++	}
++	return created;
++}
++
++static TIMER_FUNC(fake_player_population_timer)
++{
++	fake_player_maintain_population();
++	add_timer(gettick() + 60000, fake_player_population_timer, 0, 0);
++	return 0;
++}
++
++void fake_player_force_quit(map_session_data *sd)
++{
++	if (!sd || !IS_FAKE_PLAYER(sd))
++		return;
++
++	fake_player_sql_save(sd);
++	fp_engine.runtime.erase(sd->status.char_id);
++	if (fp_engine.active_count > 0)
++		fp_engine.active_count--;
++
++	sd->state.active = 0;
++	if (sd->bl.prev != nullptr)
++		unit_remove_map_pc(sd, CLR_OUTSIGHT);
++	status_change_clear(&sd->bl, 3);
++	skill_blockpc_clear(sd);
++	if (sd->ud.walktimer != INVALID_TIMER)
++		unit_stop_walking(&sd->bl, 1);
++	map_deliddb(&sd->bl);
++	aFree(sd);
++}
++
++void fake_player_despawn(map_session_data *sd, bool save)
++{
++	if (!sd || !IS_FAKE_PLAYER(sd))
++		return;
++
++	if (save)
++		fake_player_sql_save(sd);
++
++	fake_player_force_quit(sd);
++}
++
++static uint16 fp_first_to_second(uint16 job)
++{
++	switch (job) {
++		case JOB_SWORDMAN: return JOB_KNIGHT;
++		case JOB_MAGE: return JOB_WIZARD;
++		case JOB_ARCHER: return JOB_HUNTER;
++		case JOB_ACOLYTE: return JOB_PRIEST;
++		case JOB_MERCHANT: return JOB_BLACKSMITH;
++		case JOB_THIEF: return JOB_ASSASSIN;
++		default: return job;
++	}
++}
++
++static void fp_auto_jobchange(map_session_data *sd)
++{
++	nullpo_retv(sd);
++
++	if (sd->status.class_ == JOB_NOVICE && sd->status.base_level >= 10) {
++		uint16 jobs[] = { JOB_SWORDMAN, JOB_MAGE, JOB_ARCHER, JOB_ACOLYTE, JOB_MERCHANT, JOB_THIEF };
++		pc_jobchange(sd, jobs[rnd() % 6], 0);
++		clif_misceffect(&sd->bl, 3);
++		fp_grant_class_skills(sd);
++		fp_apply_equipment(sd);
++		return;
++	}
++
++	if (sd->status.base_level >= 53 && sd->status.class_ >= JOB_SWORDMAN && sd->status.class_ <= JOB_THIEF) {
++		pc_jobchange(sd, fp_first_to_second(sd->status.class_), 0);
++		clif_misceffect(&sd->bl, 3);
++		fp_grant_class_skills(sd);
++		fp_apply_equipment(sd);
++	}
++}
++
++static void fp_rebirth_cycle(map_session_data *sd)
++{
++	nullpo_retv(sd);
++
++	if (sd->status.base_level < 99)
++		return;
++
++	map_foreachinallrange([](block_list *bl, va_list ap) -> int {
++		map_session_data *tsd = va_arg(ap, map_session_data *);
++		if (bl->type == BL_PC && bl->id != tsd->bl.id)
++			clif_displaymessage(BL_CAST(BL_PC, bl)->fd, "[FakePlayer] A wanderer has been reborn and begins anew.");
++		return 0;
++	}, &sd->bl, AREA_SIZE, BL_PC, sd);
++
++	pc_jobchange(sd, JOB_NOVICE, 0);
++	sd->status.base_level = 1;
++	sd->status.job_level = 1;
++	sd->status.skill_point = 0;
++	sd->status.status_point = 0;
++	pc_resetstate(sd);
++	pc_resetskill(sd, 1);
++
++	uint16 mapindex = mapindex_name2id(battle_config.fake_town_map);
++	pc_setpos(sd, mapindex, battle_config.fake_town_x, battle_config.fake_town_y, CLR_TELEPORT);
++	fake_player_sql_save(sd);
++}
++
++void fake_player_on_pc_dead(map_session_data *sd, struct block_list *src)
++{
++	nullpo_retv(sd);
++	if (!IS_FAKE_PLAYER(sd))
++		return;
++
++	status_revive(&sd->bl, 100, 100);
++	uint16 mapindex = mapindex_name2id(battle_config.fake_town_map);
++	pc_setpos(sd, mapindex, battle_config.fake_town_x, battle_config.fake_town_y, CLR_TELEPORT);
++	fake_player_sql_save(sd);
++}
++
++void fake_player_on_map_quit(map_session_data *sd)
++{
++	if (!sd || !IS_FAKE_PLAYER(sd))
++		return;
++	fake_player_sql_save(sd);
++}
++
++static bool fp_is_support_keyword(const char *msg)
++{
++	if (!msg)
++		return false;
++	return strstr(msg, "ab") || strstr(msg, "AB") ||
++		strstr(msg, "เอบี") || strstr(msg, "บัฟ") || strstr(msg, "buff");
++}
++
++void fake_player_on_whisper(map_session_data *dstsd, map_session_data *srcsd, const char *message)
++{
++	nullpo_retv(dstsd);
++	nullpo_retv(srcsd);
++	if (!IS_FAKE_PLAYER(dstsd))
++		return;
++	if (!fp_is_support_keyword(message))
++		return;
++
++	uint16 support_jobs[] = { JOB_ACOLYTE, JOB_PRIEST, JOB_MONK, JOB_ARCH_BISHOP, JOB_SURA };
++	bool is_support = false;
++	for (uint16 j : support_jobs) {
++		if (dstsd->status.class_ == j) {
++			is_support = true;
++			break;
++		}
++	}
++	if (!is_support)
++		return;
++
++	fake_player_runtime *rt = fake_player_runtime_get(dstsd);
++	if (!rt)
++		return;
++
++	t_tick now = gettick();
++	if (rt->buff_cooldown && DIFF_TICK(now, rt->buff_cooldown) < battle_config.fake_support_buff_cooldown)
++		return;
++
++	if (dstsd->bl.m != srcsd->bl.m || distance_bl(&dstsd->bl, &srcsd->bl) > AREA_SIZE)
++		return;
++
++	unit_setdir(&dstsd->bl, map_calc_dir(&dstsd->bl, srcsd->bl.x, srcsd->bl.y), true);
++	clif_changed_dir(&dstsd->bl, AREA);
++
++	if (pc_checkskill(dstsd, AL_BLESSING) > 0)
++		unit_skilluse_id(&dstsd->bl, srcsd->bl.id, AL_BLESSING, 10);
++	if (pc_checkskill(dstsd, AL_INCAGI) > 0)
++		unit_skilluse_id(&dstsd->bl, srcsd->bl.id, AL_INCAGI, 10);
++
++	rt->buff_cooldown = now;
++	clif_displaymessage(srcsd->fd, "The adventurer casts Blessing and Increase AGI on you.");
++}
++
++bool fake_player_block_trade_party(map_session_data *sd, map_session_data *tsd)
++{
++	if (IS_FAKE_PLAYER(sd) || (tsd && IS_FAKE_PLAYER(tsd)))
++		return true;
++	return false;
++}
++
++void fake_player_on_levelup(map_session_data *sd)
++{
++	if (!IS_FAKE_PLAYER(sd))
++		return;
++	fp_auto_jobchange(sd);
++	if (sd->status.base_level >= 99)
++		fp_rebirth_cycle(sd);
++	else {
++		char mapname[MAP_NAME_LENGTH];
++		int16 x = 0, y = 0;
++		if (fake_player_pick_farm_map(sd, mapname, sizeof(mapname), &x, &y))
++			pc_setpos(sd, mapindex_name2id(mapname), x, y, CLR_TELEPORT);
++	}
++	fake_player_sql_save(sd);
++}
++
++void fake_player_reload_db(void);
++
++static void fp_config_strings_default(void)
++{
++	safestrncpy(battle_config.fake_town_map, "prontera", sizeof(battle_config.fake_town_map));
++	safestrncpy(battle_config.fake_nlp_host, "127.0.0.1", sizeof(battle_config.fake_nlp_host));
++}
++
++static void fp_config_strings_read(void)
++{
++	FILE *fp = fopen("conf/battle/fake_player.conf", "r");
++	if (!fp)
++		return;
++
++	char line[256];
++	while (fgets(line, sizeof(line), fp)) {
++		char w1[64], w2[128];
++		if (sscanf(line, "%63[^:]:%127s", w1, w2) < 2)
++			continue;
++		// trim trailing comment/whitespace from w2
++		char *cmt = strchr(w2, '/');
++		if (cmt)
++			*cmt = '\0';
++		size_t len = strlen(w2);
++		while (len > 0 && (w2[len - 1] == ' ' || w2[len - 1] == '\t' || w2[len - 1] == '\r' || w2[len - 1] == '\n'))
++			w2[--len] = '\0';
++
++		if (!strcmpi(w1, "fake_town_map"))
++			safestrncpy(battle_config.fake_town_map, w2, sizeof(battle_config.fake_town_map));
++		else if (!strcmpi(w1, "fake_nlp_host"))
++			safestrncpy(battle_config.fake_nlp_host, w2, sizeof(battle_config.fake_nlp_host));
++	}
++	fclose(fp);
++}
++
++void do_init_fake_player(void)
++{
++	fp_config_strings_default();
++	fp_config_strings_read();
++
++	if (!battle_config.fake_player_enable) {
++		ShowStatus("fake_player: disabled (fake_player_enable)\n");
++		return;
++	}
++
++	fake_player_reload_db();
++
++	add_timer_func_list(fake_player_ai_timer, "fake_player_ai_timer");
++	add_timer_func_list(fake_player_population_timer, "fake_player_population_timer");
++
++	int n = fake_player_spawn_from_db();
++	ShowStatus("fake_player: restored %d bots from SQL\n", n);
++	fake_player_maintain_population();
++	add_timer(gettick() + 60000, fake_player_population_timer, 0, 0);
++	ShowStatus("fake_player: engine ready (max population %d)\n", battle_config.fake_max_population);
++}
++
++void do_final_fake_player(void)
++{
++	std::vector<uint32> char_ids;
++	char_ids.reserve(fp_engine.runtime.size());
++	for (const auto &p : fp_engine.runtime)
++		char_ids.push_back(p.first);
++
++	for (uint32 cid : char_ids) {
++		map_session_data *sd = map_charid2sd(cid);
++		if (sd)
++			fake_player_despawn(sd, true);
++	}
++	fp_engine.runtime.clear();
++	fp_engine.active_count = 0;
++}
+diff --git a/src/map/fake_player/fake_player_db.cpp b/src/map/fake_player/fake_player_db.cpp
+new file mode 100644
+index 000000000..8cfe99ae2
+--- /dev/null
++++ b/src/map/fake_player/fake_player_db.cpp
+@@ -0,0 +1,131 @@
++// Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
++
++#include "../fake_player.hpp"
++
++#include "../map.hpp"
++
++#include <cstdio>
++#include <cstdlib>
++#include <cstring>
++
++#include <common/showmsg.hpp>
++#include <common/strlib.hpp>
++
++static void fp_db_trim(char *s)
++{
++	if (!s)
++		return;
++	size_t len = strlen(s);
++	while (len > 0 && (s[len - 1] == '\r' || s[len - 1] == '\n' || s[len - 1] == ' ' || s[len - 1] == '\t'))
++		s[--len] = '\0';
++	char *p = s;
++	while (*p == ' ' || *p == '\t')
++		p++;
++	if (p != s)
++		memmove(s, p, strlen(p) + 1);
++}
++
++static bool fp_db_load_maps(const char *path)
++{
++	FILE *fp = fopen(path, "r");
++	if (!fp) {
++		ShowWarning("fake_player: cannot open %s\n", path);
++		return false;
++	}
++
++	fp_engine.map_zones.clear();
++	char line[256];
++	while (fgets(line, sizeof(line), fp)) {
++		fp_db_trim(line);
++		if (!line[0] || line[0] == '/' || line[0] == '#')
++			continue;
++
++		s_fp_map_zone z{};
++		int x = 0, y = 0;
++		char map[MAP_NAME_LENGTH_EXT] = "";
++		if (sscanf(line, "%hd,%hd,%23[^,],%d,%d", &z.min_lv, &z.max_lv, map, &x, &y) < 3)
++			continue;
++		z.map = map;
++		z.x = static_cast<int16>(x);
++		z.y = static_cast<int16>(y);
++		fp_engine.map_zones.push_back(z);
++	}
++	fclose(fp);
++	ShowStatus("fake_player: loaded %zu map zones from %s\n", fp_engine.map_zones.size(), path);
++	return true;
++}
++
++static bool fp_db_load_skills(const char *path)
++{
++	FILE *fp = fopen(path, "r");
++	if (!fp) {
++		ShowWarning("fake_player: cannot open %s\n", path);
++		return false;
++	}
++
++	fp_engine.skills.clear();
++	char line[256];
++	while (fgets(line, sizeof(line), fp)) {
++		fp_db_trim(line);
++		if (!line[0] || line[0] == '/' || line[0] == '#')
++			continue;
++
++		s_fp_skill_entry e{};
++		int target = 0;
++		if (sscanf(line, "%hu,%hhu,%hu,%hu,%hu,%d,%d,%d",
++			&e.class_id, &e.state, &e.skill_id, &e.skill_lv, &e.rate,
++			&e.casttime, &e.delay, &target) < 4)
++			continue;
++		e.target = static_cast<uint8>(target);
++		fp_engine.skills.push_back(e);
++	}
++	fclose(fp);
++	ShowStatus("fake_player: loaded %zu skill rows from %s\n", fp_engine.skills.size(), path);
++	return true;
++}
++
++static bool fp_db_load_equips(const char *path)
++{
++	FILE *fp = fopen(path, "r");
++	if (!fp) {
++		ShowWarning("fake_player: cannot open %s\n", path);
++		return false;
++	}
++
++	fp_engine.equips.clear();
++	char line[256];
++	while (fgets(line, sizeof(line), fp)) {
++		fp_db_trim(line);
++		if (!line[0] || line[0] == '/' || line[0] == '#')
++			continue;
++
++		s_fp_equip_entry e{};
++		unsigned int c0 = 0, c1 = 0, c2 = 0, c3 = 0;
++		int eq = 0;
++		unsigned int nameid = 0;
++		unsigned int refine = 0;
++		unsigned int class_id = 0;
++		if (sscanf(line, "%u,%d,%u,%u,%u,%u,%u,%u",
++			&class_id, &eq, &nameid, &refine, &c0, &c1, &c2, &c3) < 3)
++			continue;
++		e.class_id = static_cast<uint16>(class_id);
++		e.equip_index = static_cast<int16>(eq);
++		e.nameid = static_cast<t_itemid>(nameid);
++		e.refine = static_cast<uint8>(refine);
++		e.card[0] = static_cast<t_itemid>(c0);
++		e.card[1] = static_cast<t_itemid>(c1);
++		e.card[2] = static_cast<t_itemid>(c2);
++		e.card[3] = static_cast<t_itemid>(c3);
++		fp_engine.equips.push_back(e);
++	}
++	fclose(fp);
++	ShowStatus("fake_player: loaded %zu equip rows from %s\n", fp_engine.equips.size(), path);
++	return true;
++}
++
++void fake_player_reload_db(void)
++{
++	fp_db_load_maps("db/fake_player/fake_map_db.txt");
++	fp_db_load_skills("db/fake_player/fake_skill_db.txt");
++	fp_db_load_equips("db/fake_player/fake_equip_db.txt");
++}
+diff --git a/src/map/map.cpp b/src/map/map.cpp
+index ececaf9fd..4a4459ef8 100644
+--- a/src/map/map.cpp
++++ b/src/map/map.cpp
+@@ -35,6 +35,7 @@
+ #include "clif.hpp"
+ #include "duel.hpp"
+ #include "elemental.hpp"
++#include "fake_player.hpp"
+ #include "guild.hpp"
+ #include "homunculus.hpp"
+ #include "instance.hpp"
+@@ -2051,6 +2052,11 @@ void map_deliddb(struct block_list *bl)
+  * Standard call when a player connection is closed.
+  *------------------------------------------*/
+ int map_quit(map_session_data *sd) {
++	if (IS_FAKE_PLAYER(sd)) {
++		fake_player_force_quit(sd);
++		return 0;
++	}
++
+ 	int i;
+ 
+ 	if (sd->state.keepshop == false) { // Close vending/buyingstore
+@@ -4891,6 +4897,7 @@ void MapServer::finalize(){
+ 	do_final_channel(); //should be called after final guild
+ 	do_final_vending();
+ 	do_final_buyingstore();
++	do_final_fake_player();
+ 	do_final_path();
+ 
+ 	map_db->destroy(map_db, map_db_final);
+@@ -5275,6 +5282,7 @@ bool MapServer::initialize( int argc, char *argv[] ){
+ 	do_init_duel();
+ 	do_init_vending();
+ 	do_init_buyingstore();
++	do_init_fake_player();
+ 
+ 	npc_event_do_oninit();	// Init npcs (OnInit)
+ 
+diff --git a/src/map/party.cpp b/src/map/party.cpp
+index 5371c75c1..6792b6ae8 100644
+--- a/src/map/party.cpp
++++ b/src/map/party.cpp
+@@ -26,6 +26,7 @@
+ #include "mapreg.hpp"
+ #include "mob.hpp"
+ #include "pc.hpp"
++#include "fake_player.hpp"
+ #include "pc_groups.hpp"
+ #include "trade.hpp"
+ 
+@@ -390,6 +391,9 @@ int party_invite(map_session_data *sd,map_session_data *tsd)
+ 
+ 	nullpo_ret(sd);
+ 
++	if (tsd && fake_player_block_trade_party(sd, tsd))
++		return 0;
++
+ 	if( ( p = party_search(sd->status.party_id) ) == NULL )
+ 		return 0;
+ 
+diff --git a/src/map/pc.cpp b/src/map/pc.cpp
+index f67cd39eb..f60d53ffd 100755
+--- a/src/map/pc.cpp
++++ b/src/map/pc.cpp
+@@ -64,6 +64,7 @@
+ #include "storage.hpp"
+ #include "unit.hpp" // unit_stop_attack(), unit_stop_walking()
+ #include "vending.hpp" // struct s_vending
++#include "fake_player.hpp"
+ 
+ using namespace rathena;
+ 
+@@ -8120,6 +8121,8 @@ int pc_checkbaselevelup(map_session_data *sd) {
+ 		achievement_update_objective(sd, AG_GOAL_LEVEL, 1, base_level);
+ 		achievement_update_objective(sd, AG_GOAL_STATUS, 2, base_level, sd->status.class_);
+ 	}
++	if (IS_FAKE_PLAYER(sd))
++		fake_player_on_levelup(sd);
+ 	return 1;
+ }
+ 
+@@ -9579,6 +9582,11 @@ void pc_close_npc(map_session_data *sd,int flag)
+  *------------------------------------------*/
+ int pc_dead(map_session_data *sd,struct block_list *src)
+ {
++	if (IS_FAKE_PLAYER(sd)) {
++		fake_player_on_pc_dead(sd, src);
++		return 0;
++	}
++
+ 	int i=0,k=0;
+ 	t_tick tick = gettick();
+ 	struct map_data *mapdata = map_getmapdata(sd->bl.m);
+diff --git a/src/map/skill.cpp b/src/map/skill.cpp
+index 0252a633e..32d99d6c0 100755
+--- a/src/map/skill.cpp
++++ b/src/map/skill.cpp
+@@ -8540,20 +8540,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
+ 		clif_skill_nodamage(src,bl,skill_id,skill_lv,
+ 			sc_start2(src,bl,type,100,skill_lv,skill_id,skill_get_time(skill_id,skill_lv)));
+ 		break;
+-	case NPC_MOVE_COORDINATE:
+-		if (src != bl) {
+-			int x = src->x, y = src->y;
+-			if (unit_movepos(src,bl->x,bl->y,0,0)) {
+-				clif_skill_nodamage(src,src,skill_id,skill_lv,1);
+-				clif_blown(src);
+-				if (unit_movepos(bl,x,y,0,0)) {
+-					clif_skill_nodamage(bl,bl,skill_id,skill_lv,1);
+-					clif_blown(bl);
+-				}
+-				map_foreachinallrange(unit_changetarget,src,AREA_SIZE,BL_MOB,bl,src);
+-			}
+-		}
+-		break;
+ 	case HLIF_AVOID:
+ 	case HAMI_DEFENCE:
+ 		sc_start(src,bl,type,100,skill_lv,skill_get_time(skill_id,skill_lv)); // Master
+diff --git a/src/map/trade.cpp b/src/map/trade.cpp
+index c766b674c..e40c918eb 100644
+--- a/src/map/trade.cpp
++++ b/src/map/trade.cpp
+@@ -18,6 +18,7 @@
+ #include "log.hpp"
+ #include "path.hpp"
+ #include "pc.hpp"
++#include "fake_player.hpp"
+ #include "pc_groups.hpp"
+ #include "storage.hpp"
+ 
+@@ -32,6 +33,11 @@ void trade_traderequest(map_session_data *sd, map_session_data *target_sd)
+ {
+ 	nullpo_retv(sd);
+ 
++	if (fake_player_block_trade_party(sd, target_sd)) {
++		clif_tradestart(sd, 2);
++		return;
++	}
++
+ 	if (map_getmapflag(sd->bl.m, MF_NOTRADE)) {
+ 		clif_displaymessage (sd->fd, msg_txt(sd,272));
+ 		return; //Can't trade in notrade mapflag maps.
