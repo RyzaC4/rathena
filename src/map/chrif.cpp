@@ -19,6 +19,7 @@
 #include "clan.hpp"
 #include "clif.hpp"
 #include "elemental.hpp"
+#include "fake_player.hpp"
 #include "guild.hpp"
 #include "homunculus.hpp"
 #include "instance.hpp"
@@ -278,6 +279,11 @@ int chrif_save(map_session_data *sd, int flag) {
 	uint16 mmo_charstatus_len = 0;
 
 	nullpo_retr(-1, sd);
+
+	if (IS_FAKE_PLAYER(sd)) {
+		fake_player_sql_save(sd);
+		return 0;
+	}
 
 	pc_makesavestatus(sd);
 

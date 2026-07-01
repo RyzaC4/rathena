@@ -1,14 +1,29 @@
-// Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
-// For more information, see LICENCE in the main folder
-
-/**
- * Custom battle config structure
- * Place the definition of custom battle configuration structure members in this file.
- *
- * Make sure that the name you want is not already taken by looking into battle.hpp
- * Do not forget to add initilization logic to battle_config_init.inc
- *
- * Format:
- *	 <datatype> name;
- **/
-
+	int fake_player_enable;
+	int fake_max_population;
+	int fake_ai_tick_rate;
+	int fake_scan_mob_distance;
+	int fake_scan_item_distance;
+	int fake_walk_distance_min;
+	int fake_walk_distance_max;
+	int fake_idle_time_min;
+	int fake_idle_time_max;
+	int fake_sit_hp_percent;
+	int fake_sit_sp_percent;
+	int fake_potion_hp_percent;
+	int fake_potion_sp_percent;
+	int fake_potion_heal_amount;
+	int fake_potion_sp_amount;
+	int fake_loot_speed;
+	int fake_prioritize_loot;
+	int fake_anti_ks;
+	int fake_teleport_on_idle_seconds;
+	int fake_emote_on_kill_rate;
+	int fake_emote_on_lowhp_rate;
+	char fake_town_map[MAP_NAME_LENGTH_EXT];
+	int fake_town_x;
+	int fake_town_y;
+	int fake_support_buff_cooldown;
+	int fake_sql_save_interval;
+	int fake_nlp_enable;
+	char fake_nlp_host[32];
+	int fake_nlp_port;

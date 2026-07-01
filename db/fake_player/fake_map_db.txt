@@ -1,0 +1,25 @@
+// Fake Player Map Database
+// Format: MinLV,MaxLV,MapName,X,Y  (X/Y 0 = random walkable cell)
+1,30,prt_fild01,0,0
+1,30,prt_fild02,0,0
+1,30,prt_fild03,0,0
+1,30,prt_fild04,0,0
+1,30,prt_fild05,0,0
+1,30,prt_fild06,0,0
+1,30,prt_fild07,0,0
+1,30,prt_fild08,0,0
+1,30,prt_fild09,0,0
+1,30,prt_fild10,0,0
+1,30,prt_fild11,0,0
+31,55,mjolnir_01,0,0
+31,55,mjolnir_02,0,0
+31,55,gef_fild00,0,0
+31,55,gef_fild01,0,0
+56,75,gef_fild02,0,0
+56,75,gef_fild03,0,0
+56,75,mjolnir_12,0,0
+76,85,gef_fild10,0,0
+76,85,gef_fild11,0,0
+86,99,lhz_dun03,0,0
+86,99,abyss_03,0,0
+86,99,thor_v03,0,0

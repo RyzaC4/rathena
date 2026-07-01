@@ -18,7 +18,7 @@ RAPIDYAML_INCLUDE = -I../../3rdparty/rapidyaml/src -I../../3rdparty/rapidyaml/ex
 NLOHMANN_H = $(shell find ../../3rdparty/json/include/nlohmann/ -type f -name "*.hpp")
 NLOHMANN_INCLUDE = -I../../3rdparty/json/include
 
-MAP_OBJ = $(shell ls *.cpp | sed -e "s/\.cpp/\.o/g")
+MAP_OBJ = $(shell ls *.cpp fake_player/*.cpp 2>/dev/null | sed -e "s/\.cpp/\.o/g")
 #MAP_OBJ += $(shell ls *.c | sed -e "s/\.c/\.o/g")
 MAP_DIR_OBJ = $(MAP_OBJ:%=obj/%)
 MAP_GEN_DIR_OBJ = $(MAP_OBJ:%=obj-gen/%)
@@ -76,7 +76,7 @@ needs_mysql:
 
 obj:
 	@echo "	MKDIR	obj"
-	@-mkdir obj
+	@-mkdir -p obj/fake_player
 
 obj-gen:
 	@echo "	MDIR	obj-gen"

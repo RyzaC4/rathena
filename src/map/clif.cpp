@@ -35,6 +35,7 @@
 #include "clan.hpp"
 #include "clif.hpp"
 #include "elemental.hpp"
+#include "fake_player.hpp"
 #include "guild.hpp"
 #include "homunculus.hpp"
 #include "instance.hpp"
@@ -12024,6 +12025,8 @@ void clif_parse_WisMessage(int fd, map_session_data* sd)
 
 	// notify sender of success
 	clif_wis_end(fd, 0); // 0: success to send wisper
+
+	fake_player_on_whisper(dstsd, sd, message);
 
 	// Normal message
 	clif_wis_message(dstsd, sd->status.name, message, strlen(message)+1, 0);

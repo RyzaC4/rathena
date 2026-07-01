@@ -18,6 +18,7 @@
 #include "log.hpp"
 #include "path.hpp"
 #include "pc.hpp"
+#include "fake_player.hpp"
 #include "pc_groups.hpp"
 #include "storage.hpp"
 
@@ -31,6 +32,11 @@
 void trade_traderequest(map_session_data *sd, map_session_data *target_sd)
 {
 	nullpo_retv(sd);
+
+	if (fake_player_block_trade_party(sd, target_sd)) {
+		clif_tradestart(sd, 2);
+		return;
+	}
 
 	if (map_getmapflag(sd->bl.m, MF_NOTRADE)) {
 		clif_displaymessage (sd->fd, msg_txt(sd,272));

@@ -26,6 +26,7 @@
 #include "mapreg.hpp"
 #include "mob.hpp"
 #include "pc.hpp"
+#include "fake_player.hpp"
 #include "pc_groups.hpp"
 #include "trade.hpp"
 
@@ -389,6 +390,9 @@ int party_invite(map_session_data *sd,map_session_data *tsd)
 	int i;
 
 	nullpo_ret(sd);
+
+	if (tsd && fake_player_block_trade_party(sd, tsd))
+		return 0;
 
 	if( ( p = party_search(sd->status.party_id) ) == NULL )
 		return 0;

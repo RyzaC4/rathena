@@ -10901,6 +10901,8 @@ ACMD_FUNC(setcard)
 	return 0;
 }
 
+#include "fake_player.hpp"
+
 #include <custom/atcommand.inc>
 
 /**

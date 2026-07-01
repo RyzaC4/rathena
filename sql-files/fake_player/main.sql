@@ -1,0 +1,58 @@
+-- Fake Player Engine - dedicated persistence (separate from char/login tables)
+-- Import: mysql -u root -p ragnarok < sql-files/fake_player/main.sql
+
+CREATE TABLE IF NOT EXISTS `fake_player` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `char_name` VARCHAR(24) NOT NULL,
+  `account_id` INT UNSIGNED NOT NULL,
+  `char_id` INT UNSIGNED NOT NULL,
+  `sex` ENUM('M','F') NOT NULL DEFAULT 'M',
+  `class` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  `base_level` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+  `job_level` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+  `str` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+  `agi` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+  `vit` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+  `int` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+  `dex` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+  `luk` SMALLINT UNSIGNED NOT NULL DEFAULT 1,
+  `hair` TINYINT UNSIGNED NOT NULL DEFAULT 1,
+  `hair_color` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  `clothes_color` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  `map` VARCHAR(24) NOT NULL DEFAULT 'prontera',
+  `x` SMALLINT NOT NULL DEFAULT 156,
+  `y` SMALLINT NOT NULL DEFAULT 180,
+  `hp` INT UNSIGNED NOT NULL DEFAULT 40,
+  `max_hp` INT UNSIGNED NOT NULL DEFAULT 40,
+  `sp` INT UNSIGNED NOT NULL DEFAULT 11,
+  `max_sp` INT UNSIGNED NOT NULL DEFAULT 11,
+  `active` TINYINT UNSIGNED NOT NULL DEFAULT 1,
+  `last_update` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_char_name` (`char_name`),
+  UNIQUE KEY `uk_account_id` (`account_id`),
+  UNIQUE KEY `uk_char_id` (`char_id`),
+  KEY `idx_active` (`active`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `fake_player_equip` (
+  `char_id` INT UNSIGNED NOT NULL,
+  `equip_index` TINYINT UNSIGNED NOT NULL,
+  `nameid` INT UNSIGNED NOT NULL,
+  `refine` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  `card0` INT UNSIGNED NOT NULL DEFAULT 0,
+  `card1` INT UNSIGNED NOT NULL DEFAULT 0,
+  `card2` INT UNSIGNED NOT NULL DEFAULT 0,
+  `card3` INT UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`char_id`, `equip_index`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `fake_player_log` (
+  `log_id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `char_name` VARCHAR(24) NOT NULL,
+  `event_type` VARCHAR(32) NOT NULL,
+  `event_data` VARCHAR(255) DEFAULT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`log_id`),
+  KEY `idx_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

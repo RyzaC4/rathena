@@ -64,6 +64,7 @@
 #include "storage.hpp"
 #include "unit.hpp" // unit_stop_attack(), unit_stop_walking()
 #include "vending.hpp" // struct s_vending
+#include "fake_player.hpp"
 
 using namespace rathena;
 
@@ -8120,6 +8121,8 @@ int pc_checkbaselevelup(map_session_data *sd) {
 		achievement_update_objective(sd, AG_GOAL_LEVEL, 1, base_level);
 		achievement_update_objective(sd, AG_GOAL_STATUS, 2, base_level, sd->status.class_);
 	}
+	if (IS_FAKE_PLAYER(sd))
+		fake_player_on_levelup(sd);
 	return 1;
 }
 
@@ -9579,6 +9582,11 @@ void pc_close_npc(map_session_data *sd,int flag)
  *------------------------------------------*/
 int pc_dead(map_session_data *sd,struct block_list *src)
 {
+	if (IS_FAKE_PLAYER(sd)) {
+		fake_player_on_pc_dead(sd, src);
+		return 0;
+	}
+
 	int i=0,k=0;
 	t_tick tick = gettick();
 	struct map_data *mapdata = map_getmapdata(sd->bl.m);

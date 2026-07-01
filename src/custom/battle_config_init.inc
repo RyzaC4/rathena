@@ -1,13 +1,27 @@
-// Copyright (c) rAthena Dev Teams - Licensed under GNU GPL
-// For more information, see LICENCE in the main folder
-
-/**
- * Custom battle config initializations
- * Place the definition of custom battle configuration initializations in this file.
- *
- * Do not forget to add a comma at the end of the line, if you want to add another config
- *
- * Format:
- *	 { "name", &battle_config.<variable name>, <default value>, <minimum value>, <maximum value> },
- **/
-
+	{ "fake_player_enable",                 &battle_config.fake_player_enable,                 1,      0,      1,              },
+	{ "fake_max_population",                &battle_config.fake_max_population,                200,    0,      5000,           },
+	{ "fake_ai_tick_rate",                  &battle_config.fake_ai_tick_rate,                  1000,   200,    10000,          },
+	{ "fake_scan_mob_distance",             &battle_config.fake_scan_mob_distance,             15,     1,      30,             },
+	{ "fake_scan_item_distance",            &battle_config.fake_scan_item_distance,            10,     1,      30,             },
+	{ "fake_walk_distance_min",             &battle_config.fake_walk_distance_min,             3,      1,      20,             },
+	{ "fake_walk_distance_max",             &battle_config.fake_walk_distance_max,             9,      1,      30,             },
+	{ "fake_idle_time_min",                 &battle_config.fake_idle_time_min,                 1000,   0,      60000,          },
+	{ "fake_idle_time_max",                 &battle_config.fake_idle_time_max,                 3000,   0,      60000,          },
+	{ "fake_sit_hp_percent",                &battle_config.fake_sit_hp_percent,                30,     1,      99,             },
+	{ "fake_sit_sp_percent",                &battle_config.fake_sit_sp_percent,                30,     1,      99,             },
+	{ "fake_potion_hp_percent",             &battle_config.fake_potion_hp_percent,             70,     1,      99,             },
+	{ "fake_potion_sp_percent",             &battle_config.fake_potion_sp_percent,             70,     1,      99,             },
+	{ "fake_potion_heal_amount",            &battle_config.fake_potion_heal_amount,            325,    1,      100000,         },
+	{ "fake_potion_sp_amount",              &battle_config.fake_potion_sp_amount,              40,     1,      100000,         },
+	{ "fake_loot_speed",                    &battle_config.fake_loot_speed,                    400,    100,    5000,           },
+	{ "fake_prioritize_loot",               &battle_config.fake_prioritize_loot,               1,      0,      1,              },
+	{ "fake_anti_ks",                       &battle_config.fake_anti_ks,                       1,      0,      1,              },
+	{ "fake_teleport_on_idle_seconds",      &battle_config.fake_teleport_on_idle_seconds,      7,      1,      120,            },
+	{ "fake_emote_on_kill_rate",            &battle_config.fake_emote_on_kill_rate,            25,     0,      100,            },
+	{ "fake_emote_on_lowhp_rate",           &battle_config.fake_emote_on_lowhp_rate,           15,     0,      100,            },
+	{ "fake_town_x",                        &battle_config.fake_town_x,                      156,    0,      512,            },
+	{ "fake_town_y",                        &battle_config.fake_town_y,                      180,    0,      512,            },
+	{ "fake_support_buff_cooldown",         &battle_config.fake_support_buff_cooldown,         3000,   500,    60000,          },
+	{ "fake_sql_save_interval",             &battle_config.fake_sql_save_interval,             30000,  5000,   600000,         },
+	{ "fake_nlp_enable",                    &battle_config.fake_nlp_enable,                  0,      0,      1,              },
+	{ "fake_nlp_port",                      &battle_config.fake_nlp_port,                    8765,   1,      65535,          },
